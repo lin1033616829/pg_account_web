@@ -58,7 +58,11 @@
     
     <el-table-column label="年龄" prop="age" width="120"></el-table-column> 
     
-    <el-table-column label="头像" prop="icon" width="120"></el-table-column> 
+    <el-table-column label="头像" prop="icon" width="120"></el-table-column>
+    <el-table-column label="头像" min-width="50">
+        <img slot-scope="scope" :src=" showIcon(scope.row.icon) " class="opt_banner_td img-responsive stu_icon">
+
+    </el-table-column>
     
     <el-table-column label="性别" prop="sex" width="120">
          <template slot-scope="scope">{{scope.row.sex|formatBoolean}}</template>
@@ -109,8 +113,8 @@
              </el-col>
              <el-col :span="12">
                  带压缩的上传, (512(k)为压缩限制)
-                 <upload-image v-model="imageUrl" :fileSize="512" :maxWH="1080" />
-                 已上传文件 {{ imageUrl }}
+                 <upload-image v-model="formData.icon" :fileSize="512" :maxWH="1080" />
+                 已上传文件 {{ formData.icon }}
              </el-col>
 
 
@@ -139,11 +143,14 @@ import {
     getStudentList
 } from "@/api/student";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
+import { uploadTool } from "@/utils/upload";
 import infoList from "@/mixins/infoList";
+import {mapGetters} from "vuex";
 const path = process.env.VUE_APP_BASE_API;
 export default {
   name: "Student",
   mixins: [infoList],
+
   data() {
     return {
         path: path,
@@ -151,7 +158,8 @@ export default {
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
-      multipleSelection: [],formData: {
+      multipleSelection: [],
+        formData: {
             name:"",
             age:0,
             icon:"",
@@ -160,6 +168,9 @@ export default {
       }
     };
   },
+    computed: {
+        ...mapGetters("user", ["userInfo", "token"])
+    },
   filters: {
     formatDate: function(time) {
       if (time != null && time != "") {
@@ -178,6 +189,11 @@ export default {
     }
   },
   methods: {
+      showIcon(icon){
+        let fullPath = this.path + icon;
+        console.log(icon);
+        return fullPath;
+      },
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
@@ -279,29 +295,19 @@ export default {
       }
     },
       checkFile(file) {
-          this.fullscreenLoading = true;
-          const isJPG = file.type === "image/jpeg";
-          const isPng = file.type === "image/png";
-          const isLt2M = file.size / 1024 / 1024 < 2;
-          if (!isJPG && !isPng) {
-              this.$message.error("上传头像图片只能是 JPG或png 格式!");
-              this.fullscreenLoading = false;
-          }
-          if (!isLt2M) {
-              this.$message.error("上传头像图片大小不能超过 2MB!");
-              this.fullscreenLoading = false;
-          }
-          return (isPng || isJPG) && isLt2M;
+          return uploadTool.checkFile('stu_icon', file);
       },
       uploadSuccess(res) {
           this.fullscreenLoading = false;
+          console.log(res);
           if (res.code == 0) {
               this.$message({
                   type: "success",
                   message: "上传成功"
               });
+              this.formData.icon = res.data.file.url;
               if (res.code == 0) {
-                  this.getTableData();
+                  // this.getTableData();
               }
           } else {
               this.$message({
@@ -330,4 +336,8 @@ export default {
 </script>
 
 <style>
+    .stu_icon{
+        width:50px;
+        height:50px;
+    }
 </style>
