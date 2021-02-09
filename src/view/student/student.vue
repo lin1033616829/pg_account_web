@@ -57,11 +57,9 @@
     <el-table-column label="名称" prop="name" width="120"></el-table-column> 
     
     <el-table-column label="年龄" prop="age" width="120"></el-table-column> 
-    
-    <el-table-column label="头像" prop="icon" width="120"></el-table-column>
+
     <el-table-column label="头像" min-width="50">
         <img slot-scope="scope" :src=" showIcon(scope.row.icon) " class="opt_banner_td img-responsive stu_icon">
-
     </el-table-column>
     
     <el-table-column label="性别" prop="sex" width="120">
@@ -112,11 +110,9 @@
                  </el-upload>
              </el-col>
              <el-col :span="12">
-                 带压缩的上传, (512(k)为压缩限制)
-                 <upload-image v-model="formData.icon" :fileSize="512" :maxWH="1080" />
-                 已上传文件 {{ formData.icon }}
+                 <upload-image v-model="formData.icon" />
+                 <img :src=" showIcon(formData.icon) " class="opt_banner_td img-responsive stu_icon">
              </el-col>
-
 
 <!--            <el-input v-model="formData.icon" clearable placeholder="请输入" ></el-input>-->
       </el-form-item>
@@ -144,6 +140,7 @@ import {
 } from "@/api/student";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import { uploadTool } from "@/utils/upload";
+import { getFullPath } from "@/utils/common";
 import infoList from "@/mixins/infoList";
 import {mapGetters} from "vuex";
 const path = process.env.VUE_APP_BASE_API;
@@ -190,6 +187,10 @@ export default {
   },
   methods: {
       showIcon(icon){
+          if(icon.indexOf("http") != -1){
+              console.log("httttt", icon);
+              return icon;
+          }
         let fullPath = this.path + icon;
         console.log(icon);
         return fullPath;
