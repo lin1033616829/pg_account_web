@@ -1,145 +1,22 @@
 <template>
     <div>
-        <div class="search-term">
-            <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
-                <el-form-item label="应用ID">
-                    <el-input placeholder="搜索应用ID" v-model="searchInfo.appid"></el-input>
-                </el-form-item>
-                <el-form-item label="游戏名称">
-                    <el-input placeholder="搜索游戏名称" v-model="searchInfo.title"></el-input>
-                </el-form-item>
-                <el-form-item label="分类">
-                    <el-select v-model="searchInfo.cate" placeholder="请选择分类">
-                        <el-option v-for="item in gameTypeList" :key="item"  :value="item"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="引擎:" prop="engine">
-                    <el-select v-model="searchInfo.engine" placeholder="请选择引擎">
-                        <el-option
-                                v-for="(item,key) in engineTypeMap"
-                                :key="key"
-                                :label="item"
-                                :value="key">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button @click="onSubmit" type="primary">查询</el-button>
-                    <el-button @click="resetSubmit" type="primary" plain>重置</el-button>
-                </el-form-item>
-
-                <br>
-                <el-form-item>
-                    <el-button @click="openDialog" type="primary">新增游戏</el-button>
-                </el-form-item>
-                <!--        <el-form-item>-->
-                <!--          <el-popover placement="top" v-model="deleteVisible" width="160">-->
-                <!--            <p>确定要删除吗？</p>-->
-                <!--              <div style="text-align: right; margin: 0">-->
-                <!--                <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>-->
-                <!--                <el-button @click="onDelete" size="mini" type="primary">确定</el-button>-->
-                <!--              </div>-->
-                <!--            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>-->
-                <!--          </el-popover>-->
-                <!--        </el-form-item>-->
-            </el-form>
-        </div>
-        <el-table
-                :data="tableData"
-                @selection-change="handleSelectionChange"
-                border
-                ref="multipleTable"
-                stripe
-                style="width: 100%"
-                tooltip-effect="dark"
-        >
-            <el-table-column type="selection" width="55"></el-table-column>
-
-            <el-table-column label="应用id" prop="appid" width="120"></el-table-column>
-            <el-table-column label="游戏名称" prop="title" width="120"></el-table-column>
-
-
-            <el-table-column label="开发者ID" prop="adminId" width="120"></el-table-column>
-
-            <!--    <el-table-column label="描述" prop="info" width="120"></el-table-column>-->
-
-
-            <el-table-column label="分类" prop="cate" width="120"></el-table-column>
-
-            <el-table-column label="引擎" prop="engine"  width="120">
-                <template slot-scope="scope">
-                    <div>{{ showEngine(scope.row.engine)}}</div>
-                </template>
-            </el-table-column>
-
-            <el-table-column label="SDK使用" prop="appkey" width="220"></el-table-column>
-
-            <el-table-column label="日期" width="180">
-                <template slot-scope="scope">{{scope.row.createdAt|formatDate}}</template>
-            </el-table-column>
-
-            <!--    <el-table-column label="后端对接key" prop="serverkey" width="120"></el-table-column>-->
-
-            <!--    <el-table-column label="聚合登录服务" prop="serviceAccount" width="120"></el-table-column>-->
-
-            <!--    <el-table-column label="匹配服务开通状态：默认0" prop="serviceMatch" width="120"></el-table-column>-->
-
-            <!--    <el-table-column label="聚合支付服务" prop="servicePay" width="120"></el-table-column>-->
-
-            <!--    <el-table-column label="好友关系服务" prop="serviceFriends" width="120"></el-table-column>-->
-
-            <!--    <el-table-column label="数据服务" prop="serviceData" width="120"></el-table-column>-->
-
-            <!--    <el-table-column label="创建时间" prop="createdAt" width="120"></el-table-column>-->
-
-            <el-table-column label="上线状态" prop="status" width="120">
-                <template slot-scope="scope">
-                    <div :class="addClassStatus(scope.row.status)">{{ showStatus(scope.row.status) }}</div>
-                </template>
-            </el-table-column>
-
-            <el-table-column label="按钮组">
-                <template slot-scope="scope">
-                    <el-button class="table-button" @click="updateGame(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
-                    <el-button class="table-button" size="small" type="warning" icon="el-icon-switch-button" @click="updOpt(scope.row, 'status')">上线/下线</el-button>
-<!--                    <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>-->
-                    <el-button type="success" icon="el-icon-s-promotion" size="mini" v-show="showNotify(scope.row.notify)" @click="updOpt(scope.row)">通知</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-
-        <el-pagination
-                :current-page="page"
-                :page-size="pageSize"
-                :page-sizes="[10, 30, 50, 100]"
-                :style="{float:'right',padding:'20px'}"
-                :total="total"
-                @current-change="handleCurrentChange"
-                @size-change="handleSizeChange"
-                layout="total, sizes, prev, pager, next, jumper"
-        ></el-pagination>
-
-        <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-
-            <el-form :model="formData" :rules="rules" ref="formData" label-position="right" label-width="120px"   >
+        <el-form :model="formData" :rules="rules" ref="formData" label-position="right" label-width="120px"   >
 
                 <!--      <el-form-item label="开发者ID:" v-show="!isCreate">-->
                 <!--             <el-input v-model.number="formData.adminId" clearable placeholder="请输入"></el-input>-->
                 <!--      </el-form-item>-->
 
-<!--                <el-form-item label="上线状态:" prop="status" v-show="!isCreate">-->
-<!--                    <el-tooltip :content="'Switch value: '" placement="top">-->
-<!--                        <el-switch-->
-<!--                                v-model="formData.status"-->
-<!--                                active-color="#13ce66"-->
-<!--                                inactive-color="#dcdfe6"-->
-<!--                                active-value=2-->
-<!--                                inactive-value=1>-->
-<!--                        </el-switch>-->
-<!--                    </el-tooltip>-->
-<!--                </el-form-item>-->
+                <!--                <el-form-item label="上线状态:" prop="status" v-show="!isCreate">-->
+                <!--                    <el-tooltip :content="'Switch value: '" placement="top">-->
+                <!--                        <el-switch-->
+                <!--                                v-model="formData.status"-->
+                <!--                                active-color="#13ce66"-->
+                <!--                                inactive-color="#dcdfe6"-->
+                <!--                                active-value=2-->
+                <!--                                inactive-value=1>-->
+                <!--                        </el-switch>-->
+                <!--                    </el-tooltip>-->
+                <!--                </el-form-item>-->
 
 
 
@@ -203,7 +80,6 @@
                 <el-button @click="closeDialog">取 消</el-button>
                 <el-button @click="enterDialog" type="primary">确 定</el-button>
             </div>
-        </el-dialog>
     </div>
 </template>
 
@@ -223,7 +99,7 @@
     import { formatTimeToStr } from "@/utils/date";
     import infoList from "@/mixins/infoList";
     export default {
-        name: "Game",
+        name: "game_opt",
         mixins: [infoList],
         data() {
             return {
@@ -279,6 +155,7 @@
                 if (time != null && time != "") {
                     time *= 1000
                     var date = new Date(time);
+                    console.log("data", date)
                     return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
                 } else {
                     return "";
@@ -304,6 +181,7 @@
                 return globalConf.game.statusMap[status];
             },
             showNotify(status){
+                console.log(status);
                 return globalConf.game.notifyNo == status;
             },
             addClassStatus(status){
@@ -470,16 +348,15 @@
                 }
             },
             openDialog() {
-                this.$router.push({ name:'game_opt', query: { id: 123 }})
-
-                // this.type = "create";
-                // this.isCreate = true;
-                // this.dialogFormVisible = true;
+                this.type = "create";
+                this.isCreate = true;
+                this.dialogFormVisible = true;
             }
         },
         async created() {
-            await this.getOtherData();
-            await this.getTableData();
+            alert(1);
+            // await this.getOtherData();
+            // await this.getTableData();
         }
     };
 </script>

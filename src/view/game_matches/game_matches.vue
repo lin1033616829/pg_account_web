@@ -7,7 +7,9 @@
         </el-form-item>                
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
+          <el-button @click="resetSubmit" type="primary" plain>重置</el-button>
         </el-form-item>
+          <br>
         <el-form-item>
           <el-button @click="openDialog" type="primary">新增游戏匹配</el-button>
         </el-form-item>
@@ -18,7 +20,7 @@
                 <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
                 <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
               </div>
-            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
+<!--            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>-->
           </el-popover>
         </el-form-item>
       </el-form>
@@ -33,44 +35,58 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="日期" width="180">
-         <template slot-scope="scope">{{scope.row.UpdatedAt|formatDate}}</template>
-    </el-table-column>
     
-    <el-table-column label="ID" prop="id" width="120"></el-table-column> 
+<!--    <el-table-column label="ID" prop="id" width="120"></el-table-column> -->
     
     <el-table-column label="GameID" prop="game_id" width="120"></el-table-column>
     
     <el-table-column label="规则名称" prop="name" width="120"></el-table-column> 
     
-    <el-table-column label="匹配代码" prop="match_code" width="120"></el-table-column> 
-    
-    <el-table-column label="匹配最大人数" prop="max_players" width="120"></el-table-column> 
-    
-    <el-table-column label="规则内容" prop="rule" width="120"></el-table-column> 
-    
-    <el-table-column label="超时设置" prop="timeout" width="120"></el-table-column> 
-    
-    <el-table-column label="帧频率" prop="fps" width="120"></el-table-column> 
-    
-    <el-table-column label="缓存通知" prop="notify" width="120">
+    <el-table-column label="匹配代码" prop="match_code" width="120"></el-table-column>
+
+    <el-table-column label="匹配最大人数" prop="max_players" width="120"></el-table-column>
+
+<!--    <el-table-column label="规则内容" prop="rule" width="120"></el-table-column>-->
+    <el-table-column label="规则内容" prop="path" width="80">
         <template slot-scope="scope">
-            <div>{{ showNotify(scope.row.notify)}}</div>
+            <div>
+                <el-popover placement="top-start" trigger="hover" v-if="scope.row.rule">
+                    <div class="popover-box">
+                        <pre>{{fmtBody(scope.row.rule)}}</pre>
+                    </div>
+                    <i class="el-icon-view" slot="reference"></i>
+                </el-popover>
+
+                <span v-else>无</span>
+            </div>
         </template>
+    </el-table-column>
+
+
+    <el-table-column label="超时设置" prop="timeout" width="120"></el-table-column>
+
+    <el-table-column label="帧频率" prop="fps" width="120"></el-table-column>
+
+    <el-table-column label="日期" width="180">
+        <template slot-scope="scope">{{scope.row.UpdatedAt|formatDate}}</template>
     </el-table-column>
 
     <el-table-column label="上线状态" prop="status" width="120">
         <template slot-scope="scope">
-            <div>{{ showStatus(scope.row.status)}}</div>
+            <div :class="addClassStatus(scope.row.status)">{{ showStatus(scope.row.status) }}</div>
         </template>
     </el-table-column>
     
       <el-table-column label="按钮组">
         <template slot-scope="scope">
           <el-button class="table-button" @click="updateGameMatches(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
+            <el-button class="table-button" size="small" type="warning" icon="el-icon-switch-button" @click="updOpt(scope.row, 'status')">上线/下线</el-button>
+            <el-button type="success" icon="el-icon-s-promotion" size="mini" v-show="showNotify(scope.row.notify)" @click="updOpt(scope.row)">通知</el-button>
+            <el-button type="danger" v-show="showDelBtn(scope.row.status)" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
+
+
     </el-table>
 
     <el-pagination
@@ -140,17 +156,18 @@ import {
     updateGameMatches,
     findGameMatches,
     getGameMatchesList,
-    getGameMatchOtherData,
+    // getGameMatchOtherData,
+    notify,
+    updateGameMatchStatus,
 } from "@/api/game_match";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
+import { globalConf } from "@/utils/global/global";
 import infoList from "@/mixins/infoList";
 export default {
   name: "game_matches",
   mixins: [infoList],
   data() {
     return {
-      statusTypeMap:{},
-      notifyTypeMap:{},
       listApi: getGameMatchesList,
       dialogFormVisible: false,
       type: "",
@@ -219,11 +236,28 @@ export default {
     }
   },
   methods: {
+      showDelBtn(status){
+        return globalConf.game_match.statusOff == status;
+      },
       showStatus(status){
-          return this.statusTypeMap[status];
+          return globalConf.game.statusMap[status];
       },
       showNotify(status){
-          return this.notifyTypeMap[status];
+          console.log(status);
+          return globalConf.game.notifyNo == status;
+      },
+      addClassStatus(status){
+          if(status == globalConf.game.statusOn){
+              return 'statusOn';
+          }
+          return 'statusOff';
+      },
+      fmtBody(value) {
+          try {
+              return JSON.parse(value);
+          } catch (err) {
+              return value;
+          }
       },
       //条件搜索前端看此方法
       onSubmit() {
@@ -231,8 +265,31 @@ export default {
         this.pageSize = 10              
         this.getTableData()
       },
+      resetSubmit(){
+          this.searchInfo = {};
+          this.onSubmit();
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val
+      },
+      async updOpt(row, type="notify"){
+          let sendData = {
+              id: row.id,
+          };
+          let res;
+          if(type == "notify"){
+              res = await notify(sendData);
+          }else{
+              res = await updateGameMatchStatus(sendData);
+          }
+          console.log("res", res);
+          if (res.code == 0) {
+              this.$message({
+                  type: "success",
+                  message: res.msg,
+              });
+              await this.getTableData();
+          }
       },
       deleteRow(row){
         this.$confirm('确定要删除吗?', '提示', {
@@ -294,7 +351,7 @@ export default {
       };
     },
     async deleteGameMatches(row) {
-      const res = await deleteGameMatches({ ID: row.id });
+      const res = await deleteGameMatches({ id: row.id });
       if (res.code == 0) {
         this.$message({
           type: "success",
@@ -307,13 +364,13 @@ export default {
       }
     },
     async getOtherData() {
-      const res = await getGameMatchOtherData();
-      if (res.code == 0) {
-        this.statusTypeMap = res.data.statusTypeMap;
-        this.notifyTypeMap = res.data.notifyTypeMap;
-      }
-      console.log("engineTypeMap", this.engineTypeMap)
-      console.log("gameTypeList", this.gameTypeList)
+      // const res = await getGameMatchOtherData();
+      // if (res.code == 0) {
+      //   this.statusTypeMap = res.data.statusTypeMap;
+      //   this.notifyTypeMap = res.data.notifyTypeMap;
+      // }
+      // console.log("engineTypeMap", this.engineTypeMap)
+      // console.log("gameTypeList", this.gameTypeList)
     },
     async enterDialog() {
       let res;
@@ -362,5 +419,36 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+    .statusOn{
+        color: green;
+    }
+    .statusOff{
+        color:#d9d9d9;
+    }
+</style>
+<style lang="scss">
+    .table-expand {
+        padding-left: 60px;
+        font-size: 0;
+        label {
+            width: 90px;
+            color: #99a9bf;
+            .el-form-item {
+                margin-right: 0;
+                margin-bottom: 0;
+                width: 50%;
+            }
+        }
+    }
+    .popover-box {
+        background: #112435;
+        color: #f08047;
+        height: 600px;
+        width: 420px;
+        overflow: auto;
+    }
+    .popover-box::-webkit-scrollbar {
+        display: none; /* Chrome Safari */
+    }
 </style>

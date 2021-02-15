@@ -99,6 +99,14 @@ export const createGame = (data) => {
      })
  }
 
+// @Tags Game
+// @Summary 获取其他游戏信息
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.PageInfo true "获取其他游戏信息"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /game/getGameOtherData [get]
  export const getGameOtherData = (params) => {
      return service({
          url: "/game/getOtherData",
@@ -106,3 +114,35 @@ export const createGame = (data) => {
          params
      })
  }
+
+// @Tags Game
+// @Summary 通知游戏缓存
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.PageInfo true "通知游戏缓存"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router /game/notifyGame [get]
+export const notifyGame = (params) => {
+    return service({
+        url: "/game/notify",
+        method: 'put',
+        params
+    })
+}
+
+// @Tags Game
+// @Summary 更新游戏的状态
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.PageInfo true "更新游戏的状态"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router /game/notifyGame [get]
+export const updateGameStatus = (params) => {
+    return service({
+        url: "/game/updateStatus",
+        method: 'put',
+        params
+    })
+}
