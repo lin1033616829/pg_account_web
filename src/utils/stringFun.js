@@ -27,3 +27,12 @@ export const toHump = (name) => {
         return letter.toUpperCase();
     });
 }
+
+// 返回指定长度名称
+export const getStrPos = (name, len1) => {
+    if(name.length <= len1){
+        return name;
+    }else{
+        return name.substring(0,len1);
+    }
+}

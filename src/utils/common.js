@@ -10,3 +10,4 @@ export const getFullPath = (path) => {
     console.log("path=", path);
     return path;
 }
+

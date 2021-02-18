@@ -2,10 +2,14 @@
   <div>
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">      
-        <el-form-item label="匹配代码">
-          <el-input placeholder="搜索条件" v-model="searchInfo.match_code"></el-input>
-        </el-form-item>                
-        <el-form-item>
+            <el-form-item label="GameID">
+                <el-input placeholder="搜索条件" v-model="searchInfo.game_id"></el-input>
+            </el-form-item>
+            <el-form-item label="规则名称">
+              <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>
+            </el-form-item>
+
+          <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
           <el-button @click="resetSubmit" type="primary" plain>重置</el-button>
         </el-form-item>
@@ -39,12 +43,21 @@
 <!--    <el-table-column label="ID" prop="id" width="120"></el-table-column> -->
     
     <el-table-column label="GameID" prop="game_id" width="120"></el-table-column>
-    
-    <el-table-column label="规则名称" prop="name" width="120"></el-table-column> 
+
+    <el-table-column label="规则名称" prop="name" width="120">
+        <template slot-scope="scope">
+            <span>{{getStrByPos(scope.row.name, 10)}}</span>
+        </template>
+    </el-table-column>
     
     <el-table-column label="匹配代码" prop="match_code" width="120"></el-table-column>
 
     <el-table-column label="匹配最大人数" prop="max_players" width="120"></el-table-column>
+
+    <el-table-column label="超时设置" prop="timeout" width="120"></el-table-column>
+
+    <el-table-column label="帧频率" prop="fps" width="120"></el-table-column>
+
 
 <!--    <el-table-column label="规则内容" prop="rule" width="120"></el-table-column>-->
     <el-table-column label="规则内容" prop="path" width="80">
@@ -63,11 +76,9 @@
     </el-table-column>
 
 
-    <el-table-column label="超时设置" prop="timeout" width="120"></el-table-column>
 
-    <el-table-column label="帧频率" prop="fps" width="120"></el-table-column>
 
-    <el-table-column label="日期" width="180">
+    <el-table-column label="更新日期" width="180">
         <template slot-scope="scope">{{scope.row.UpdatedAt|formatDate}}</template>
     </el-table-column>
 
@@ -123,7 +134,7 @@
       </el-form-item>
        
          <el-form-item label="规则内容:" prop="rule">
-            <el-input v-model="formData.rule" clearable placeholder="请输入" ></el-input>
+             <el-input type="textarea" placeholder="请输入" v-model="formData.rule"></el-input>
       </el-form-item>
        
          <el-form-item label="超时设置:" prop="timeout">
@@ -161,6 +172,7 @@ import {
     updateGameMatchStatus,
 } from "@/api/game_match";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
+import { getStrPos } from "@/utils/stringFun";
 import { globalConf } from "@/utils/global/global";
 import infoList from "@/mixins/infoList";
 export default {
@@ -258,6 +270,9 @@ export default {
           } catch (err) {
               return value;
           }
+      },
+      getStrByPos(name, len){
+          return getStrPos(name, len);
       },
       //条件搜索前端看此方法
       onSubmit() {

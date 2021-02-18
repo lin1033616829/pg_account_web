@@ -76,8 +76,8 @@
 
             <el-table-column label="SDK使用" prop="appkey" width="220"></el-table-column>
 
-            <el-table-column label="日期" width="180">
-                <template slot-scope="scope">{{scope.row.createdAt|formatDate}}</template>
+            <el-table-column label="更新日期" width="180">
+                <template slot-scope="scope">{{scope.row.UpdatedAt|formatDate}}</template>
             </el-table-column>
 
             <!--    <el-table-column label="后端对接key" prop="serverkey" width="120"></el-table-column>-->
@@ -223,7 +223,7 @@
     import { formatTimeToStr } from "@/utils/date";
     import infoList from "@/mixins/infoList";
     export default {
-        name: "Game",
+        name: "gameindex",
         mixins: [infoList],
         data() {
             return {
@@ -276,9 +276,11 @@
         },
         filters: {
             formatDate: function(time) {
+                console.log(time);
                 if (time != null && time != "") {
-                    time *= 1000
+                    // time *= 1000
                     var date = new Date(time);
+                    console.log(date);
                     return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
                 } else {
                     return "";
@@ -469,12 +471,13 @@
                     this.getTableData();
                 }
             },
-            openDialog() {
-                this.$router.push({ name:'game_opt', query: { id: 123 }})
+             openDialog() {
+                // this.$router.push({ name:'gameopt', query: { id: 123 }})
 
-                // this.type = "create";
-                // this.isCreate = true;
-                // this.dialogFormVisible = true;
+
+                this.type = "create";
+                this.isCreate = true;
+                this.dialogFormVisible = true;
             }
         },
         async created() {
