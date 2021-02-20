@@ -91,9 +91,9 @@
       <el-table-column label="按钮组">
         <template slot-scope="scope">
           <el-button class="table-button" @click="updateGameMatches(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
-            <el-button class="table-button" size="small" type="warning" icon="el-icon-switch-button" @click="updOpt(scope.row, 'status')">上线/下线</el-button>
+            <el-button class="table-button" size="small" type="warning" icon="el-icon-switch-button" @click="updOpt(scope.row, 'status')">{{ showOptStatus(scope.row.status) }}</el-button>
             <el-button type="success" icon="el-icon-s-promotion" size="mini" v-show="showNotify(scope.row.notify)" @click="updOpt(scope.row)">通知</el-button>
-            <el-button type="danger" v-show="showDelBtn(scope.row.status)" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
+            <el-button type="danger" v-show="showDelBtn(scope.row)" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
 
@@ -248,18 +248,25 @@ export default {
     }
   },
   methods: {
-      showDelBtn(status){
-        return globalConf.game_match.statusOff == status;
+      showDelBtn(row){
+        return globalConf.game_match.statusOff == row.status && globalConf.game_match.notifyYes == row.notify;
       },
       showStatus(status){
-          return globalConf.game.statusMap[status];
+          return globalConf.game_match.statusMap[status];
+      },
+      showOptStatus(status){
+          if(status == globalConf.game_match.statusOn){
+              return "下线";
+          }else{
+              return "上线";
+          }
       },
       showNotify(status){
           console.log(status);
-          return globalConf.game.notifyNo == status;
+          return globalConf.game_match.notifyNo == status;
       },
       addClassStatus(status){
-          if(status == globalConf.game.statusOn){
+          if(status == globalConf.game_match.statusOn){
               return 'statusOn';
           }
           return 'statusOff';

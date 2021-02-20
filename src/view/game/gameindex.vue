@@ -103,8 +103,8 @@
             <el-table-column label="按钮组">
                 <template slot-scope="scope">
                     <el-button class="table-button" @click="updateGame(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
-                    <el-button class="table-button" size="small" type="warning" icon="el-icon-switch-button" @click="updOpt(scope.row, 'status')">上线/下线</el-button>
-<!--                    <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>-->
+                    <el-button class="table-button" size="small" type="warning" icon="el-icon-switch-button" @click="updOpt(scope.row, 'status')">{{ showOptStatus(scope.row.status) }}</el-button>
+                    <el-button type="danger" v-show="showDelBtn(scope.row)" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
                     <el-button type="success" icon="el-icon-s-promotion" size="mini" v-show="showNotify(scope.row.notify)" @click="updOpt(scope.row)">通知</el-button>
                 </template>
             </el-table-column>
@@ -299,11 +299,21 @@
         },
         methods: {
             //条件搜索前端看此方法
+            showDelBtn(row){
+                return globalConf.game.statusOff == row.status && globalConf.game.notifyYes == row.notify;
+            },
             showEngine(status){
                 return this.engineTypeMap[status];
             },
             showStatus(status){
                 return globalConf.game.statusMap[status];
+            },
+            showOptStatus(status){
+                if(status == globalConf.game.statusOn){
+                    return "下线";
+                }else{
+                    return "上线";
+                }
             },
             showNotify(status){
                 return globalConf.game.notifyNo == status;
