@@ -6,7 +6,6 @@
     export default {
         name:"game",
         async created() {
-            this.$router.push({ name:'gameindex', query: { id: 123 }})
         }
     }
 </script>

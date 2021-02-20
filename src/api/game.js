@@ -146,3 +146,19 @@ export const updateGameStatus = (params) => {
         params
     })
 }
+
+// @Tags Game
+// @Summary 搜索获取Game列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.PageInfo true "搜索获取Game列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /game/getGameList [get]
+export const searchGameList = (params) => {
+    return service({
+        url: "/game/searchGameList",
+        method: 'get',
+        params
+    })
+}

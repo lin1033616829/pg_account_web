@@ -118,7 +118,8 @@
 <!--      </el-form-item>-->
 
          <el-form-item label="GameID:" prop="game_id">
-             <el-input v-model.number="formData.game_id" clearable placeholder="请输入"></el-input>
+<!--             <el-input v-model.number="formData.game_id" clearable placeholder="请输入"></el-input>-->
+             <game-select @change="gameIdChange" v-model="formData.game_id" />
         </el-form-item>
        
          <el-form-item label="规则名称:" prop="name">
@@ -171,6 +172,7 @@ import {
     notify,
     updateGameMatchStatus,
 } from "@/api/game_match";  //  此处请自行替换地址
+import gameSelect from "@/components/gameSelect";
 import { formatTimeToStr } from "@/utils/date";
 import { getStrPos } from "@/utils/stringFun";
 import { globalConf } from "@/utils/global/global";
@@ -178,6 +180,7 @@ import infoList from "@/mixins/infoList";
 export default {
   name: "game_matches",
   mixins: [infoList],
+  components: { gameSelect },
   data() {
     return {
       listApi: getGameMatchesList,
@@ -281,6 +284,10 @@ export default {
       getStrByPos(name, len){
           return getStrPos(name, len);
       },
+      gameIdChange(eventData){
+          console.log(eventData);
+          this.formData.game_id = eventData;
+      },
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
@@ -353,6 +360,7 @@ export default {
       this.type = "update";
       if (res.code == 0) {
         this.formData = res.data.reGameMatch;
+        // this.formData.game_id = res.data.reGameMatch.game_id;
         this.dialogFormVisible = true;
       }
     },
