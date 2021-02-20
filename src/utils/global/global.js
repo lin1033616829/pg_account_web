@@ -21,11 +21,30 @@ export const globalConf = {
         statusOff:1,
         statusDel:3,
 
+        team_type_1: 1,
+        team_type_2: 2,
+
         statusMap:{
             1:    "下线",
             2:    "上线",
             3:    "已删除"
         },
+
+        teamTypeMap:{
+            1: "对称团队战",
+            2: "各自为战",
+        },
+        teamTypeList:[
+            {
+                label: "对称团队战",
+                value: 1,
+
+            },
+            {
+                label: "各自为战",
+                value: 2,
+            }
+        ],
     },
 
 };

@@ -129,6 +129,17 @@
          <el-form-item label="匹配代码:" prop="match_code">
             <el-input v-model="formData.match_code" clearable placeholder="请输入" ></el-input>
       </el-form-item>
+
+
+
+          <el-form-item label="团队类型:" prop="team_type">
+              <el-select v-model="formData.team_type" placeholder="请选择团队类型">
+                  <el-option v-for="(item, index) in teamTypeList" :key="index" :label="item.label" :value="item.value" ></el-option>
+              </el-select>
+          </el-form-item>
+
+
+
        
          <el-form-item label="匹配最大人数:" prop="max_players">
              <el-input v-model.number="formData.max_players" clearable placeholder="请输入"></el-input>
@@ -141,6 +152,10 @@
          <el-form-item label="超时设置:" prop="timeout">
              <el-input v-model.number="formData.timeout" clearable placeholder="请输入"></el-input>
       </el-form-item>
+
+          <el-form-item label="匹配成功时间:" prop="success_timeout">
+              <el-input v-model.number="formData.success_timeout" clearable placeholder="请输入"></el-input>
+          </el-form-item>
        
          <el-form-item label="帧频率:" prop="fps">
              <el-input v-model.number="formData.fps" clearable placeholder="请输入"></el-input>
@@ -188,14 +203,17 @@ export default {
       type: "",
       deleteVisible: false,
       multipleSelection: [],
+        teamTypeList:[],
       formData: {
             id:0,
             game_id:0,
             name:"",
+            team_type:1,
             match_code:"",
             max_players:0,
             rule:"",
             timeout:0,
+            success_timeout:300,
             fps:0,
             notify:0,
             status:0,
@@ -225,6 +243,10 @@ export default {
         timeout: [
             { required: true, message: '匹配超时时间不得为空', trigger: 'change' },
             { type: 'number', message: '匹配超时时间必须为整数', trigger: 'blur' },
+        ],
+        success_timeout: [
+            { required: true, message: '匹配成功时间不得为空', trigger: 'change' },
+            { type: 'number', message: '匹配成功时间必须为整数', trigger: 'blur' },
         ],
         fps: [
             { required: true, message: '帧率不得为空', trigger: 'change' },
@@ -264,6 +286,9 @@ export default {
               return "上线";
           }
       },
+      showTeamTypeInfo(status){
+          return globalConf.game_match.teamTypeMap[status];
+      },
       showNotify(status){
           console.log(status);
           return globalConf.game_match.notifyNo == status;
@@ -285,7 +310,6 @@ export default {
           return getStrPos(name, len);
       },
       gameIdChange(eventData){
-          console.log("父 接收到", eventData);
           this.formData.game_id = eventData;
       },
       //条件搜索前端看此方法
@@ -360,6 +384,7 @@ export default {
       this.type = "update";
       if (res.code == 0) {
         this.formData = res.data.reGameMatch;
+        // this.formData.team_type = this.formData.team_type.toString();
         // this.formData.game_id = res.data.reGameMatch.game_id;
           console.log(this.formData)
         this.dialogFormVisible = true;
@@ -373,8 +398,10 @@ export default {
           name:"",
           match_code:"",
           max_players:0,
+          team_type:1,
           rule:"",
           timeout:0,
+          success_timeout:300,
           fps:0,
           notify:0,
           status:0,
@@ -443,6 +470,7 @@ export default {
     }
   },
   async created() {
+    this.teamTypeList = globalConf.game_match.teamTypeList;
     await this.getOtherData();
     await this.getTableData();
   
