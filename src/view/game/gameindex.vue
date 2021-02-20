@@ -242,7 +242,7 @@
                     info:"",
                     cate:"",
                     engine:1,
-                    appid:0,
+                    appid:"",
                     appkey:"",
                     serverkey:"",
                     serviceAccount:0,
@@ -276,11 +276,8 @@
         },
         filters: {
             formatDate: function(time) {
-                console.log(time);
                 if (time != null && time != "") {
-                    // time *= 1000
                     var date = new Date(time);
-                    console.log(date);
                     return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
                 } else {
                     return "";
@@ -397,8 +394,6 @@
                 if (res.code == 0) {
                     this.formData = res.data.regame;
                     this.formData.status = this.formData.status.toString()
-                    // this.formData.engine = this.formData.engine.toString()
-                    // this.formData = row;
                     this.dialogFormVisible = true;
                 }
             },

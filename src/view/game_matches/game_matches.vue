@@ -119,7 +119,7 @@
 
          <el-form-item label="GameID:" prop="game_id">
 <!--             <el-input v-model.number="formData.game_id" clearable placeholder="请输入"></el-input>-->
-             <game-select @change="gameIdChange" v-model="formData.game_id" />
+             <game-select @changeGame="gameIdChange" :gameId="formData.game_id" />
         </el-form-item>
        
          <el-form-item label="规则名称:" prop="name">
@@ -285,7 +285,7 @@ export default {
           return getStrPos(name, len);
       },
       gameIdChange(eventData){
-          console.log(eventData);
+          console.log("父 接收到", eventData);
           this.formData.game_id = eventData;
       },
       //条件搜索前端看此方法
@@ -361,6 +361,7 @@ export default {
       if (res.code == 0) {
         this.formData = res.data.reGameMatch;
         // this.formData.game_id = res.data.reGameMatch.game_id;
+          console.log(this.formData)
         this.dialogFormVisible = true;
       }
     },

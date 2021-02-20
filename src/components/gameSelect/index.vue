@@ -7,7 +7,7 @@
             placeholder="请输入关键词"
             :remote-method="remoteMethod"
             :loading="loading"
-            v-on:change="$emit('change', $event)"
+            v-on:change="$emit('changeGame', $event)"
     >
         <el-option
                 v-for="item in options"
@@ -24,36 +24,31 @@
     } from "@/api/game";  //  此处请自行替换地址
     export default {
         name: "gameSelect",
-        model: {
-            prop: 'gameId',
-            event: 'change'
-        },
-        props: {
-            gameId: {
-                // type: Object,
-                required: false,
-                default: 0,
-            },
-        },
+        props: ['gameId'],
         data() {
             return {
                 options: [],
-                value: [],
+                value: '',
                 loading: false,
                 states: []
             }
         },
+        watch: {
+            gameId (val) {
+                this.value = val;
+                this.remoteMethod(val);
+            }
+        },
         methods: {
             remoteMethod(query) {
-                if (query !== '') {
-                    this.loading = true;
-                    this.gameSelectFunc(query);
-                    this.loading = false;
-                } else {
-                    this.options = [];
-                }
+                this.loading = true;
+                this.gameSelectFunc(query);
+                this.loading = false;
             },
             async gameSelectFunc(searchStr) {
+                if(searchStr == 0){
+                    searchStr = "";
+                }
                 const res = await searchGameList({ search: searchStr });
                 console.log(res);
                 if(res.code != 0){
@@ -62,7 +57,7 @@
                 }
                 this.options = res.data.list.map(item => {
                     let opt = {
-                        label: item.title,
+                        label: "[ " + item.appid +" ]  " + item.title ,
                         value:  item.appid,
                     };
                     return opt;
@@ -71,6 +66,7 @@
             },
         },
         created() {
+            this.value = this.gameId;
             this.gameSelectFunc(this.value);
         }
     }
