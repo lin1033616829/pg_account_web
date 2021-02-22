@@ -75,7 +75,7 @@
     ></el-pagination>
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      <el-form :model="formData" label-position="right" label-width="80px">
+      <el-form :model="formData" :rules="rules" ref="formData" label-position="right" label-width="120px">
 
 
         <el-form-item label="GameID:" prop="game_id">
@@ -83,11 +83,11 @@
           <game-select @changeGame="gameIdChange" :gameId="formData.game_id" />
         </el-form-item>
        
-         <el-form-item label="货币名称:">
+         <el-form-item label="货币名称:" prop="name">
             <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
       </el-form-item>
        
-         <el-form-item label="货币标识符:">
+         <el-form-item label="货币标识符:" prop="label">
             <el-input v-model="formData.label" clearable placeholder="请输入" ></el-input>
       </el-form-item>
        </el-form>
@@ -128,7 +128,20 @@ export default {
             name:"",
             label:"",
             
-      }
+      },
+    rules: {
+        game_id: [
+            { required: true, message: '游戏ID不得为空', trigger: 'change' },
+        ],
+        name: [
+            { required: true, message: '货币名称', trigger: 'change' },
+            { min: 2, max: 30, message: '长度在 3-30 个字符以内', trigger: 'change' },
+        ],
+        title: [
+            { required: true, message: '货币标识符', trigger: 'change' },
+            { min: 2, max: 30, message: '长度在 3-30 个字符以内', trigger: 'change' },
+        ],
+    },
     };
   },
   filters: {
@@ -224,7 +237,18 @@ export default {
       }
     },
     async enterDialog() {
-      let res;
+        let res = {};
+        let isValidate = false;
+        this.$refs['formData'].validate((valid) => {
+            if (!valid) {
+                return false;
+            }
+            isValidate = true;
+        });
+        if(!isValidate){
+            this.$message.error('请检查页面错误信息！');
+            return false;
+        }
       switch (this.type) {
         case "create":
           res = await createGoodsCurrency(this.formData);
