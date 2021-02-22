@@ -35,6 +35,22 @@ export default {
                 this.page = table.data.page
                 this.pageSize = table.data.pageSize
             }
-        }
+        },
+        showGameName(name){
+            if(name == ""){
+                return '-';
+            }
+            return name;
+        },
+        gameIdChange(eventData){
+            this.formData.game_id = eventData;
+        },
+        gameIdChangeSearch(eventData){
+            this.searchInfo.game_id = eventData;
+        },
+        resetSubmit(){
+            this.searchInfo = {};
+            this.onSubmit();
+        },
     }
 }

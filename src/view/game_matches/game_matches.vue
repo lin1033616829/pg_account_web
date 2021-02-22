@@ -121,11 +121,11 @@
 <!--             <el-input v-model.number="formData.game_id" clearable placeholder="请输入"></el-input>-->
              <game-select @changeGame="gameIdChange" :gameId="formData.game_id" />
         </el-form-item>
-       
+
          <el-form-item label="规则名称:" prop="name">
             <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
       </el-form-item>
-       
+
          <el-form-item label="匹配代码:" prop="match_code">
             <el-input v-model="formData.match_code" clearable placeholder="请输入" ></el-input>
       </el-form-item>
@@ -140,15 +140,15 @@
 
 
 
-       
+
          <el-form-item label="匹配最大人数:" prop="max_players">
              <el-input v-model.number="formData.max_players" clearable placeholder="请输入"></el-input>
       </el-form-item>
-       
+
          <el-form-item label="规则内容:" prop="rule">
              <el-input type="textarea" placeholder="请输入" v-model="formData.rule"></el-input>
       </el-form-item>
-       
+
          <el-form-item label="超时设置:" prop="timeout">
              <el-input v-model.number="formData.timeout" clearable placeholder="请输入"></el-input>
       </el-form-item>
@@ -156,11 +156,11 @@
           <el-form-item label="匹配成功时间:" prop="success_timeout">
               <el-input v-model.number="formData.success_timeout" clearable placeholder="请输入"></el-input>
           </el-form-item>
-       
+
          <el-form-item label="帧频率:" prop="fps">
              <el-input v-model.number="formData.fps" clearable placeholder="请输入"></el-input>
       </el-form-item>
-       
+
 <!--         <el-form-item label="缓存通知:"><el-input v-model.number="formData.notify" clearable placeholder="请输入"></el-input>-->
 <!--      </el-form-item>-->
 <!--       -->
@@ -317,10 +317,6 @@ export default {
         this.page = 1
         this.pageSize = 10              
         this.getTableData()
-      },
-      resetSubmit(){
-          this.searchInfo = {};
-          this.onSubmit();
       },
       handleSelectionChange(val) {
         this.multipleSelection = val

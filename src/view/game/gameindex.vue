@@ -326,10 +326,6 @@
                 this.pageSize = 10
                 this.getTableData()
             },
-            resetSubmit(){
-                this.searchInfo = {};
-                this.onSubmit();
-            },
             handleSelectionChange(val) {
                 this.multipleSelection = val
             },
