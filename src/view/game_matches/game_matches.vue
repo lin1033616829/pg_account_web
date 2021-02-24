@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">      
-            <el-form-item label="GameID">
-                <el-input placeholder="搜索条件" v-model="searchInfo.game_id"></el-input>
-            </el-form-item>
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
+          <el-form-item label="GameID:">
+              <game-select @changeGame="gameIdChangeSearch" :gameId="searchInfo.game_id" />
+          </el-form-item>
             <el-form-item label="规则名称">
               <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>
             </el-form-item>

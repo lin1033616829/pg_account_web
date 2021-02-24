@@ -79,7 +79,7 @@
             <el-input v-model="formData.tag_name" clearable placeholder="请输入" ></el-input>
       </el-form-item>
        
-         <el-form-item label="标签描述:" prop="tag_label">
+         <el-form-item label="标签标识符:" prop="tag_label">
             <el-input v-model="formData.tag_label" clearable placeholder="请输入" ></el-input>
       </el-form-item>
 
