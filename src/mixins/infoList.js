@@ -3,7 +3,8 @@ export default {
     data() {
         return {
             hostPath:process.env.VUE_APP_BASE_API,
-            uploadPrex:process.env.UPOAD_BASE_PRE,
+            // uploadPrex:process.env.UPOAD_BASE_PRE,
+            uploadPrex:"http://chukong.oss-cn-qingdao.aliyuncs.com",
             page: 1,
             total: 10,
             pageSize: 10,
@@ -55,6 +56,7 @@ export default {
             this.onSubmit();
         },
         showUploadFile(file){
+            console.log("fffffffffffffff", file);
             if(file == "" || file == undefined) {
                 return "";
             }
@@ -62,6 +64,7 @@ export default {
                 return file;
             }
             let fullPath = this.uploadPrex + file;
+            console.log(fullPath);
             return fullPath;
         },
     }

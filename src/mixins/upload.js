@@ -2,7 +2,8 @@ export default {
     data() {
         return {
             hostPath:process.env.VUE_APP_BASE_API,
-            uploadPrex:process.env.UPOAD_BASE_PRE,
+            // uploadPrex:process.env.UPOAD_BASE_PRE,
+            uploadPrex:"http://chukong.oss-cn-qingdao.aliyuncs.com",
         }
     },
     methods: {

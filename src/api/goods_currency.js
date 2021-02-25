@@ -98,3 +98,12 @@ export const createGoodsCurrency = (data) => {
          params
      })
  }
+
+
+export const goodsCurrencySearch = (params) => {
+    return service({
+        url: "/goodsCurreny/goodsCurrencySearch",
+        method: 'get',
+        params
+    })
+}

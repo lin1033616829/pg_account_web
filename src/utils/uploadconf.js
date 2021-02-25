@@ -1,7 +1,7 @@
 export const uploadConf = {
     isTest:false,   //isTest==true 一律不限制
     fileType : {
-        stu_icon:{
+        goods_icon:{
             noLimit : false,    //是否不限制
             name : "icon",
             alowType:[

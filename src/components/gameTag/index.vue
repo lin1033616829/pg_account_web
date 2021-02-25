@@ -22,7 +22,7 @@
     import { goodsTagSearch } from "@/api/goods_tag";
     export default {
         name: "gameTag",
-        props: ['gameId', 'tagId'],
+        props: ['gameId', 'curId'],
         data() {
             return {
                 options: [],
@@ -35,7 +35,7 @@
             gameId (val) {
                 this.remoteMethod(val);
             },
-            tagId (val) {
+            curId (val) {
                 this.value = val;
                 // this.remoteMethod(val);
             },
@@ -58,7 +58,7 @@
                 }
                 this.options = res.data.list.map(item => {
                     let opt = {
-                        label: "[ " + item.id +" ]  " + item.tag_name ,
+                        label: "[ " + item.id +" ]  " + item.name ,
                         value:  item.id,
                     };
                     return opt;
@@ -69,7 +69,7 @@
         created() {
             this.value = this.gameId;
             console.log("gameId", this.gameId);
-            console.log("tag_id", this.tagId);
+            console.log("curId", this.curId);
             this.getSelectFunc(this.value);
         }
     }

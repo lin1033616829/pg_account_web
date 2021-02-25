@@ -31,15 +31,12 @@
                   </el-upload>
               </el-col>
               <el-col :span="12">
-                  <img :src="formData.icon" alt="" width="70px">
-                  <img :src=" showUploadFile(formData.icon) " class="opt_banner_td img-responsive stu_icon">
+<!--                  <img :src="formData.icon" alt="" class="goods_icon">-->
+                  <img :src="showUploadFile(formData.icon) " class=" img-responsive goods_icon">
               </el-col>
-
-              <!--            <el-input v-model="formData.icon" clearable placeholder="请输入" ></el-input>-->
           </el-form-item>
        
          <el-form-item label="物品:" prop="items_id">
-<!--            <el-input v-model="formData.items_id" clearable placeholder="请输入" ></el-input>-->
              <el-select
                      v-model="formData.items_id"
                      multiple
@@ -57,14 +54,11 @@
       </el-form-item>
        
          <el-form-item label="商品标签:" prop="tag_id">
-             <game-tag @changeGame="gameTagChange" :gameId="formData.game_id" :tagId="formData.tag_id" />
-<!--             <el-input v-model.number="formData.tag_id" clearable placeholder="请输入"></el-input>-->
+             <game-tag @changeGame="gameTagChange" :gameId="formData.game_id" :curId="formData.tag_id" />
       </el-form-item>
        
-
-       
          <el-form-item label="币种:" prop="currency_id">
-             <el-input v-model.number="formData.currency_id" clearable placeholder="请输入"></el-input>
+             <game-currency @changeGame="gameCurChange" :gameId="formData.game_id" :curId="formData.currency_id" />
       </el-form-item>
        
          <el-form-item label="价格:" prop="price">
@@ -74,14 +68,7 @@
          <el-form-item label="折扣:" prop="discount">
               <el-input-number v-model="formData.discount" :precision="2" clearable></el-input-number>
        </el-form-item>
-       
-<!--         <el-form-item label="上架状态:">-->
-<!--             <el-input v-model.number="formData.sale" clearable placeholder="请输入"></el-input>-->
-<!--      </el-form-item>-->
-<!--       -->
-<!--         <el-form-item label="通知:">-->
-<!--             <el-input v-model.number="formData.notify" clearable placeholder="请输入"></el-input>-->
-<!--      </el-form-item>-->
+
        </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -103,11 +90,12 @@ import { formatTimeToStr } from "@/utils/date";
 import { uploadTool } from "@/utils/upload";
 import gameSelect from "@/components/gameSelect";
 import gameTag from "@/components/gameTag";
+import gameCurrency from "@/components/gameCurrency";
 import upload from "@/mixins/upload";
 export default {
   name: "Goods",
   mixins: [upload],
-  components: { gameSelect, gameTag },
+  components: { gameSelect, gameTag, gameCurrency },
   data() {
     return {
       dialogFormVisible: false,
@@ -190,6 +178,9 @@ export default {
       gameTagChange(eventData){
           this.formData.tag_id = eventData;
       },
+      gameCurChange(eventData){
+          this.formData.currency_id = eventData;
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
@@ -236,7 +227,7 @@ export default {
       }
     },
       checkFile(file) {
-          return uploadTool.checkFile('stu_icon', file);
+          return uploadTool.checkFile('goods_icon', file);
       },
       uploadSuccess(res) {
           this.fullscreenLoading = false;
@@ -278,5 +269,8 @@ export default {
     .goods_opt{
         width:100%;
         max-width: 600px;
+    }
+    .goods_icon{
+        width:160px;
     }
 </style>

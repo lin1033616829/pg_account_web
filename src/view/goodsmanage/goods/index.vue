@@ -3,10 +3,11 @@
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
         <el-form-item label="GameID">
-          <el-input placeholder="搜索条件" v-model="searchInfo.game_id"></el-input>
+          <game-select @changeGame="gameIdChangeSearch" :gameId="searchInfo.game_id" />
         </el-form-item>                        
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
+          <el-button @click="resetSubmit" type="primary" plain>重置</el-button>
         </el-form-item>
         <el-form-item>
           <el-button @click="openDialog" type="primary">新增商品</el-button>
@@ -32,17 +33,23 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="日期" width="180">
-         <template slot-scope="scope">{{scope.row.UpdatedAt|formatDate}}</template>
+    <el-table-column label="更新日期" width="180">
+         <template slot-scope="scope">{{scope.row.updated_at|formatDate}}</template>
     </el-table-column>
-    
-    <el-table-column label="GameID" prop="game_id" width="120"></el-table-column> 
+
+      <el-table-column label="GoodsID" prop="goods_id" width="120"></el-table-column>
+
+      <el-table-column label="GameID" prop="game_id" width="120"></el-table-column>
     
     <el-table-column label="物品" prop="items_id" width="120"></el-table-column> 
     
     <el-table-column label="商品标签" prop="tag_id" width="120"></el-table-column> 
     
-    <el-table-column label="展示图" prop="icon" width="120"></el-table-column> 
+    <el-table-column label="展示图" prop="icon" width="120">
+      <template slot-scope="scope">
+        <el-avatar shape="square" :size="100" :fit="fil" :src="showUploadFile(scope.row.icon)"></el-avatar>
+      </template>
+    </el-table-column>
     
     <el-table-column label="标题" prop="title" width="120"></el-table-column> 
     
@@ -87,12 +94,15 @@ import {
     getGoodsList
 } from "@/api/goods";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
+import gameSelect from "@/components/gameSelect";
 import infoList from "@/mixins/infoList";
 export default {
   name: "Goods",
   mixins: [infoList],
+  components: { gameSelect },
   data() {
     return {
+      fil:"fill",
       listApi: getGoodsList,
       deleteVisible: false,
       multipleSelection: [],
@@ -146,7 +156,7 @@ export default {
         }
         this.multipleSelection &&
           this.multipleSelection.map(item => {
-            ids.push(item.ID)
+            ids.push(item.id)
           })
         const res = await deleteGoodsByIds({ ids })
         if (res.code == 0) {
@@ -162,10 +172,10 @@ export default {
         }
       },
     async updateGoods(row) {
-        this.$router.push({ name:'goods_opt', query: { type:"update", id:row.ID }});
+        this.$router.push({ name:'goods_opt', query: { type:"update", id:row.id }});
     },
     async deleteGoods(row) {
-      const res = await deleteGoods({ ID: row.ID });
+      const res = await deleteGoods({ ID: row.id });
       if (res.code == 0) {
         this.$message({
           type: "success",

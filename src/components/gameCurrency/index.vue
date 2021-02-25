@@ -19,12 +19,10 @@
 </template>
 
 <script>
-    import {
-        searchGameList,
-    } from "@/api/game";  //  此处请自行替换地址
+    import { goodsCurrencySearch } from "@/api/goods_currency";
     export default {
-        name: "gameSelect",
-        props: ['gameId'],
+        name: "gameCurrency",
+        props: ['gameId', 'curId'],
         data() {
             return {
                 options: [],
@@ -35,21 +33,23 @@
         },
         watch: {
             gameId (val) {
-                this.value = val;
                 this.remoteMethod(val);
-            }
+            },
+            curId (val) {
+                this.value = val;
+            },
         },
         methods: {
             remoteMethod(query) {
                 this.loading = true;
-                this.gameSelectFunc(query);
+                this.getSelectFunc(query);
                 this.loading = false;
             },
-            async gameSelectFunc(searchStr) {
+            async getSelectFunc(searchStr) {
                 if(searchStr == 0){
                     searchStr = "";
                 }
-                const res = await searchGameList({ search: searchStr });
+                const res = await goodsCurrencySearch({ game_id: searchStr });
                 console.log(res);
                 if(res.code != 0){
                     this.$message.error(res.msg);
@@ -57,8 +57,8 @@
                 }
                 this.options = res.data.list.map(item => {
                     let opt = {
-                        label: "[ " + item.appid +" ]  " + item.title ,
-                        value:  item.appid,
+                        label: "[ " + item.id +" ]  " + item.name ,
+                        value:  item.id,
                     };
                     return opt;
                 });
@@ -67,7 +67,8 @@
         },
         created() {
             this.value = this.gameId;
-            this.gameSelectFunc(this.value);
+            console.log("gameId", this.gameId);
+            this.getSelectFunc(this.value);
         }
     }
 </script>
