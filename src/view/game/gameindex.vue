@@ -473,9 +473,6 @@
                 }
             },
              openDialog() {
-                // this.$router.push({ name:'gameopt', query: { id: 123 }})
-
-
                 this.type = "create";
                 this.isCreate = true;
                 this.dialogFormVisible = true;

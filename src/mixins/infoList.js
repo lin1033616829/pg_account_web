@@ -2,6 +2,8 @@ import { getDict } from "@/utils/dictionary";
 export default {
     data() {
         return {
+            hostPath:process.env.VUE_APP_BASE_API,
+            uploadPrex:process.env.UPOAD_BASE_PRE,
             page: 1,
             total: 10,
             pageSize: 10,
@@ -51,6 +53,16 @@ export default {
         resetSubmit(){
             this.searchInfo = {};
             this.onSubmit();
+        },
+        showUploadFile(file){
+            if(file == "" || file == undefined) {
+                return "";
+            }
+            if(file.indexOf("http") != -1){
+                return file;
+            }
+            let fullPath = this.uploadPrex + file;
+            return fullPath;
         },
     }
 }

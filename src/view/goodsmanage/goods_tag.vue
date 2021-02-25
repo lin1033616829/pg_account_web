@@ -40,7 +40,9 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-    
+
+      <el-table-column label="ID" prop="id" width="80"></el-table-column>
+
     <el-table-column label="GameID" prop="game_id" width="120"></el-table-column>
 
       <el-table-column label="游戏名称" prop="game_name" width="120"></el-table-column>

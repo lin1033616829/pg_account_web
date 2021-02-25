@@ -98,3 +98,11 @@ export const createGoodsTag = (data) => {
          params
      })
  }
+
+export const goodsTagSearch = (params) => {
+    return service({
+        url: "/goodsTag/goodsTagSearch",
+        method: 'get',
+        params
+    })
+}
