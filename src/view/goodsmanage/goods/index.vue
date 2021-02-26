@@ -3,7 +3,7 @@
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
         <el-form-item label="GameID">
-          <game-select @changeGame="gameIdChangeSearch" :gameId="searchInfo.game_id" />
+          <game-select @changeGame="gameIdChangeSearch" :readOnly="gameSelectReadOnly" :gameId="searchInfo.game_id" />
         </el-form-item>                        
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
@@ -118,6 +118,7 @@ export default {
       fil:"fill",
       listApi: getGoodsList,
       deleteVisible: false,
+      gameSelectReadOnly:false,
       multipleSelection: [],
 
     };

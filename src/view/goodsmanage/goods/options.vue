@@ -4,7 +4,7 @@
       <el-form :model="formData" :rules="rules" ref="formData" label-position="right" label-width="90px">
 
           <el-form-item label="GameID:" prop="game_id">
-              <game-select @changeGame="gameIdChange" :gameId="formData.game_id" />
+              <game-select @changeGame="gameIdChange" :readOnly="gameSelectReadOnly" :gameId="formData.game_id" />
           </el-form-item>
 
           <el-form-item label="标题:" prop="title">
@@ -21,7 +21,7 @@
                   <el-upload
                           :action="`${hostPath}/fileUploadAndDownload/upload`"
                           :before-upload="checkFile"
-                          :headers="{ 'x-token': token }"
+                          :headers="{ 'x-token': token, 'game_id': formData.game_id}"
                           :on-error="uploadError"
                           :on-success="uploadSuccess"
                           :show-file-list="false"
@@ -88,6 +88,7 @@ import {
 } from "@/api/goods";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import { uploadTool } from "@/utils/upload";
+import { deepClone } from "@/utils/common";
 import gameSelect from "@/components/gameSelect";
 import gameTag from "@/components/gameTag";
 import gameCurrency from "@/components/gameCurrency";
@@ -100,6 +101,7 @@ export default {
     return {
       dialogFormVisible: false,
       type: "",
+        gameSelectReadOnly:false,
       deleteVisible: false,
       multipleSelection: [],
         itemsIdOptions:[],
@@ -207,7 +209,7 @@ export default {
     async enterDialog() {
       let res;
       let price;
-      let postData = this.formData;
+      let postData = deepClone(this.formData);
       let isValidate = false;
       this.$refs['formData'].validate((valid) => {
             if (!valid) {
@@ -255,6 +257,7 @@ export default {
       },
       async initPage(){
           if(this.$route.query.type == "update"){
+              this.gameSelectReadOnly = true;
               this.type = "update";
               const res = await findGoods({ id: this.$route.query.id });
               console.log("find-res", res);
@@ -262,6 +265,7 @@ export default {
               this.formData.price = this.formData.price/100;
           }else{
               this.type = "create";
+              this.gameSelectReadOnly = false;
           }
           if(this.formData.items_id != ""){
             let option = this.formData.items_id.split(",");

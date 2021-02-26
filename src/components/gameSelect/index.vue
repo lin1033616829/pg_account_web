@@ -24,7 +24,7 @@
     } from "@/api/game";  //  此处请自行替换地址
     export default {
         name: "gameSelect",
-        props: ['gameId'],
+        props: ['gameId', 'readOnly'],
         data() {
             return {
                 options: [],

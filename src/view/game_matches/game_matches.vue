@@ -126,8 +126,8 @@
             <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
       </el-form-item>
 
-         <el-form-item label="匹配代码:" prop="match_code">
-            <el-input v-model="formData.match_code" clearable placeholder="请输入" ></el-input>
+         <el-form-item label="匹配代码:" prop="match_code" v-show="createNoShowLimit">
+            <el-input readonly v-model="formData.match_code" clearable placeholder="请输入" ></el-input>
       </el-form-item>
 
 
@@ -196,6 +196,11 @@ export default {
   name: "game_matches",
   mixins: [infoList],
   components: { gameSelect },
+    computed:{
+        createNoShowLimit:function () {
+            return this.type == "update";
+        }
+    },
   data() {
     return {
       listApi: getGameMatchesList,
@@ -226,9 +231,6 @@ export default {
         name: [
             { required: true, message: '规则名称', trigger: 'change' },
             { min: 3, max: 30, message: '长度在 3-30 个字符以内', trigger: 'change' },
-        ],
-        match_code: [
-            { required: true, message: '匹配代码', trigger: 'change' },
         ],
         team_type: [
             { required: true, message: '团队类型不得为空', trigger: 'change' },
