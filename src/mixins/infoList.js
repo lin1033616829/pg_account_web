@@ -1,4 +1,5 @@
 import { getDict } from "@/utils/dictionary";
+import { getStrPos } from "@/utils/stringFun";
 export default {
     data() {
         return {
@@ -66,5 +67,9 @@ export default {
             console.log(fullPath);
             return fullPath;
         },
+        getStrByPos(name, len){
+            return getStrPos(name, len);
+        },
+
     }
 }

@@ -130,16 +130,11 @@
             <el-input readonly v-model="formData.match_code" clearable placeholder="请输入" ></el-input>
       </el-form-item>
 
-
-
           <el-form-item label="团队类型:" prop="team_type">
               <el-select v-model="formData.team_type" placeholder="请选择团队类型">
                   <el-option v-for="(item, index) in teamTypeList" :key="index" :label="item.label" :value="item.value" ></el-option>
               </el-select>
           </el-form-item>
-
-
-
 
          <el-form-item label="匹配最大人数:" prop="max_players">
              <el-input v-model.number="formData.max_players" clearable placeholder="请输入"></el-input>
@@ -189,7 +184,6 @@ import {
 } from "@/api/game_match";  //  此处请自行替换地址
 import gameSelect from "@/components/gameSelect";
 import { formatTimeToStr } from "@/utils/date";
-import { getStrPos } from "@/utils/stringFun";
 import { globalConf } from "@/utils/global/global";
 import infoList from "@/mixins/infoList";
 export default {
@@ -307,9 +301,6 @@ export default {
           } catch (err) {
               return value;
           }
-      },
-      getStrByPos(name, len){
-          return getStrPos(name, len);
       },
       gameIdChange(eventData){
           this.formData.game_id = eventData;

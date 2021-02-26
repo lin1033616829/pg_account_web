@@ -34,7 +34,7 @@
     >
     <el-table-column type="selection" width="55"></el-table-column>
 
-      <el-table-column label="展示图" prop="icon" width="120">
+      <el-table-column label="展示图" prop="icon" width="80">
         <template slot-scope="scope">
           <el-avatar shape="square" :size="50" :fit="fil" :src="showUploadFile(scope.row.icon)"></el-avatar>
         </template>
@@ -42,7 +42,11 @@
 
       <el-table-column label="GoodsID" prop="goods_id" width="120"></el-table-column>
 
-      <el-table-column label="标题" prop="title" width="120"></el-table-column>
+      <el-table-column label="标题" prop="title" width="120">
+        <template slot-scope="scope">
+          <span>{{getStrByPos(scope.row.title, 10)}}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column label="GameID" prop="game_id" width="120"></el-table-column>
 
@@ -50,26 +54,30 @@
     
     <el-table-column label="物品" prop="items_id" width="120"></el-table-column> 
     
-    <el-table-column label="商品标签" prop="tag_name" width="120"></el-table-column>
+    <el-table-column label="商品标签" prop="tag_name" width="80"></el-table-column>
 
-      <el-table-column label="币种" prop="gc_name" width="120"></el-table-column>
+      <el-table-column label="币种" prop="gc_name" width="80"></el-table-column>
 
 
 
       <!--    <el-table-column label="描述" prop="description" width="120"></el-table-column> -->
 
-<!--    <el-table-column label="价格" prop="price" width="120"></el-table-column> -->
-<!--    -->
-<!--    <el-table-column label="折扣" prop="discount" width="120"></el-table-column> -->
-<!--    -->
-        <el-table-column label="上架状态" prop="sale" width="120">
-          <template slot-scope="scope">
-            <div :class="addClassStatus(scope.row.sale)">{{ showSaleStatus(scope.row.sale) }}</div>
-          </template>
-        </el-table-column>
+    <el-table-column label="折扣" prop="discount" width="80"></el-table-column>
+
+      <el-table-column label="价格/元" prop="price" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.price/100 }}</span>
+        </template>
+      </el-table-column>
+
+    <el-table-column label="上架状态" prop="sale" width="80">
+      <template slot-scope="scope">
+        <div :class="addClassStatus(scope.row.sale)">{{ showSaleStatus(scope.row.sale) }}</div>
+      </template>
+    </el-table-column>
 <!--    <el-table-column label="通知" prop="notify" width="120"></el-table-column> -->
 
-      <el-table-column label="更新日期" width="180">
+      <el-table-column label="更新日期" width="160">
         <template slot-scope="scope">{{scope.row.updated_at|formatDate}}</template>
       </el-table-column>
     
