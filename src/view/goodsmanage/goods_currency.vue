@@ -11,9 +11,9 @@
           <game-select @changeGame="gameIdChangeSearch" :gameId="searchInfo.game_id" />
         </el-form-item>
 
-        <el-form-item label="货币名称">
-          <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>
-        </el-form-item>      
+<!--        <el-form-item label="货币名称">-->
+<!--          <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>-->
+<!--        </el-form-item>      -->
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
           <el-button @click="resetSubmit" type="primary" plain>重置</el-button>

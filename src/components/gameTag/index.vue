@@ -4,7 +4,7 @@
             filterable
             remote
             reserve-keyword
-            placeholder="请输入关键词"
+            placeholder="请选择或搜索"
             :remote-method="remoteMethod"
             :loading="loading"
             v-on:change="$emit('changeGame', $event)"
@@ -25,6 +25,7 @@
         props: ['gameId', 'curId'],
         data() {
             return {
+                ifNotRequest:false,
                 options: [],
                 value: '',
                 loading: false,
@@ -43,6 +44,10 @@
         methods: {
             remoteMethod(query) {
                 this.loading = true;
+                if(this.ifNotRequest){
+                    this.loading = false;
+                    return ;
+                }
                 this.getSelectFunc(query);
                 this.loading = false;
             },
@@ -67,7 +72,11 @@
             },
         },
         created() {
-            this.value = this.gameId;
+            if(this.gameId == 0){
+                this.value = "";
+            }else{
+                this.value = this.gameId;
+            }
             console.log("gameId", this.gameId);
             console.log("curId", this.curId);
             this.getSelectFunc(this.value);

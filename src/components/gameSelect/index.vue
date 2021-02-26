@@ -2,13 +2,15 @@
     <el-select
             v-model="value"
             filterable
-            remote
+
             reserve-keyword
-            placeholder="请输入关键词"
-            :remote-method="remoteMethod"
+            placeholder="请选择或搜索"
+
             :loading="loading"
             v-on:change="$emit('changeGame', $event)"
     >
+<!--        remote-->
+<!--        :remote-method="remoteMethod"-->
         <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -27,6 +29,7 @@
         props: ['gameId', 'readOnly'],
         data() {
             return {
+                ifNotRequest:true,
                 options: [],
                 value: '',
                 loading: false,
@@ -42,6 +45,10 @@
         methods: {
             remoteMethod(query) {
                 this.loading = true;
+                if(this.ifNotRequest){
+                    this.loading = false;
+                    return ;
+                }
                 this.gameSelectFunc(query);
                 this.loading = false;
             },
@@ -49,6 +56,7 @@
                 if(searchStr == 0){
                     searchStr = "";
                 }
+
                 const res = await searchGameList({ search: searchStr });
                 console.log(res);
                 if(res.code != 0){
@@ -66,7 +74,11 @@
             },
         },
         created() {
-            this.value = this.gameId;
+            if(this.gameId == 0){
+                this.value = "";
+            }else{
+                this.value = this.gameId;
+            }
             this.gameSelectFunc(this.value);
         }
     }

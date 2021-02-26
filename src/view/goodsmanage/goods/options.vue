@@ -36,7 +36,7 @@
               </el-col>
           </el-form-item>
        
-         <el-form-item label="物品:" prop="items_id">
+         <el-form-item label="物品ID:" prop="items_id">
              <el-select
                      v-model="formData.items_id"
                      multiple
@@ -222,13 +222,12 @@ export default {
             return false;
         }
       postData.items_id = this.formData.items_id.toString();
-      price = this.formData.price*100;
+      price = this.formData.price;
       let priceItem = price.toString().split(".");
       if(priceItem.length>1){
             this.$message.error('价格仅支持小数点两位！');
             return;
       }
-      postData.price = price;
       switch (this.type) {
         case "create":
           res = await createGoods(postData);
@@ -262,7 +261,6 @@ export default {
               const res = await findGoods({ id: this.$route.query.id });
               console.log("find-res", res);
               this.formData = res.data.regoods;
-              this.formData.price = this.formData.price/100;
           }else{
               this.type = "create";
               this.gameSelectReadOnly = false;
