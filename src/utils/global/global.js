@@ -46,5 +46,17 @@ export const globalConf = {
             }
         ],
     },
+    goods:{
+        saleStatusOff:1,
+        saleStatusOn:2,
+
+        saleStatusMap:{
+            1:"下线",
+            2:"上线",
+        },
+
+        notifyYes:2,
+        notifyNo:1,
+    },
 
 };

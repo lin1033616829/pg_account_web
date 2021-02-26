@@ -33,42 +33,52 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="更新日期" width="180">
-         <template slot-scope="scope">{{scope.row.updated_at|formatDate}}</template>
-    </el-table-column>
+
+      <el-table-column label="展示图" prop="icon" width="120">
+        <template slot-scope="scope">
+          <el-avatar shape="square" :size="50" :fit="fil" :src="showUploadFile(scope.row.icon)"></el-avatar>
+        </template>
+      </el-table-column>
 
       <el-table-column label="GoodsID" prop="goods_id" width="120"></el-table-column>
 
+      <el-table-column label="标题" prop="title" width="120"></el-table-column>
+
       <el-table-column label="GameID" prop="game_id" width="120"></el-table-column>
+
+      <el-table-column label="游戏名称" prop="game_name" width="120"></el-table-column>
     
     <el-table-column label="物品" prop="items_id" width="120"></el-table-column> 
     
-    <el-table-column label="商品标签" prop="tag_id" width="120"></el-table-column> 
-    
-    <el-table-column label="展示图" prop="icon" width="120">
-      <template slot-scope="scope">
-        <el-avatar shape="square" :size="100" :fit="fil" :src="showUploadFile(scope.row.icon)"></el-avatar>
-      </template>
-    </el-table-column>
-    
-    <el-table-column label="标题" prop="title" width="120"></el-table-column> 
-    
-<!--    <el-table-column label="描述" prop="description" width="120"></el-table-column> -->
-<!--    -->
-<!--    <el-table-column label="币种" prop="currency_id" width="120"></el-table-column> -->
-<!--    -->
+    <el-table-column label="商品标签" prop="tag_name" width="120"></el-table-column>
+
+      <el-table-column label="币种" prop="gc_name" width="120"></el-table-column>
+
+
+
+      <!--    <el-table-column label="描述" prop="description" width="120"></el-table-column> -->
+
 <!--    <el-table-column label="价格" prop="price" width="120"></el-table-column> -->
 <!--    -->
 <!--    <el-table-column label="折扣" prop="discount" width="120"></el-table-column> -->
 <!--    -->
-<!--    <el-table-column label="上架状态" prop="sale" width="120"></el-table-column> -->
-<!--    -->
+        <el-table-column label="上架状态" prop="sale" width="120">
+          <template slot-scope="scope">
+            <div :class="addClassStatus(scope.row.sale)">{{ showSaleStatus(scope.row.sale) }}</div>
+          </template>
+        </el-table-column>
 <!--    <el-table-column label="通知" prop="notify" width="120"></el-table-column> -->
+
+      <el-table-column label="更新日期" width="180">
+        <template slot-scope="scope">{{scope.row.updated_at|formatDate}}</template>
+      </el-table-column>
     
-      <el-table-column label="按钮组">
+      <el-table-column label="按钮组" width="250">
         <template slot-scope="scope">
           <el-button class="table-button" @click="updateGoods(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
+          <el-button class="table-button" size="small" type="warning" icon="el-icon-switch-button" @click="updOpt(scope.row, 'sale')">{{ showOptSaleStatus(scope.row.sale) }}</el-button>
+          <el-button type="success" icon="el-icon-s-promotion" size="mini" v-show="showNotify(scope.row.notify)" @click="updOpt(scope.row)">通知</el-button>
+          <el-button type="danger" icon="el-icon-delete" v-show="showDelBtn(scope.row)" size="mini" @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -91,9 +101,12 @@
 import {
     deleteGoods,
     deleteGoodsByIds,
-    getGoodsList
+    getGoodsList,
+    notify,
+    updateGoodsSaleStatus,
 } from "@/api/goods";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
+import { globalConf } from "@/utils/global/global";
 import gameSelect from "@/components/gameSelect";
 import infoList from "@/mixins/infoList";
 export default {
@@ -127,6 +140,48 @@ export default {
     }
   },
   methods: {
+      showDelBtn(row){
+        return globalConf.goods.saleStatusOff == row.sale && globalConf.goods.notifyYes == row.notify;
+      },
+      showSaleStatus(status){
+          return globalConf.goods.saleStatusMap[status];
+      },
+      addClassStatus(status){
+        if(status == globalConf.goods.saleStatusOn){
+          return 'statusOn';
+        }
+        return 'statusOff';
+      },
+      showNotify(status){
+        console.log(status);
+        return globalConf.goods.notifyNo == status;
+      },
+      showOptSaleStatus(status){
+        if(status == globalConf.goods.saleStatusOn){
+          return "下线";
+        }else{
+          return "上线";
+        }
+      },
+    async updOpt(row, type="notify"){
+      let sendData = {
+        id: row.id,
+      };
+      let res;
+      if(type == "notify"){
+        res = await notify(sendData);
+      }else{
+        res = await updateGoodsSaleStatus(sendData);
+      }
+      console.log("res", res);
+      if (res.code == 0) {
+        this.$message({
+          type: "success",
+          message: res.msg,
+        });
+        await this.getTableData();
+      }
+    },
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
@@ -198,5 +253,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+  .statusOn{
+    color: green;
+  }
+  .statusOff{
+    color:#d9d9d9;
+  }
 </style>

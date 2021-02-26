@@ -9,7 +9,7 @@
         </el-form-item>
 
         <el-form-item label="标签名称">
-          <el-input placeholder="搜索条件" v-model="searchInfo.tag_name"></el-input>
+          <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -47,9 +47,9 @@
 
       <el-table-column label="游戏名称" prop="game_name" width="120"></el-table-column>
 
-      <el-table-column label="标签名称" prop="tag_name" width="120"></el-table-column>
+      <el-table-column label="标签名称" prop="name" width="120"></el-table-column>
     
-    <el-table-column label="标签描述" prop="tag_label" width="120"></el-table-column> 
+    <el-table-column label="标签描述" prop="label" width="120"></el-table-column>
     
       <el-table-column label="按钮组">
         <template slot-scope="scope">
@@ -77,12 +77,12 @@
           <game-select @changeGame="gameIdChange" :gameId="formData.game_id" />
         </el-form-item>
        
-         <el-form-item label="标签名称:" prop="tag_name">
-            <el-input v-model="formData.tag_name" clearable placeholder="请输入" ></el-input>
+         <el-form-item label="标签名称:" prop="name">
+            <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
       </el-form-item>
        
-         <el-form-item label="标签标识符:" prop="tag_label">
-            <el-input v-model="formData.tag_label" clearable placeholder="请输入" ></el-input>
+         <el-form-item label="标签标识符:" prop="label">
+            <el-input v-model="formData.label" clearable placeholder="请输入" ></el-input>
       </el-form-item>
 
         <el-form-item label="权重:" prop="weight">
@@ -123,19 +123,19 @@ export default {
       multipleSelection: [],
       formData: {
             game_id:0,
-            tag_name:"",
-            tag_label:"",
+            name:"",
+            label:"",
             weight:1,
       },
       rules: {
         game_id: [
           { required: true, message: '游戏ID不得为空', trigger: 'change' },
         ],
-        tag_name: [
+        name: [
           { required: true, message: '名称', trigger: 'change' },
           { min: 1, max: 30, message: '长度在 1-30 个字符以内', trigger: 'change' },
         ],
-        tag_label: [
+        label: [
           { required: true, message: '标识符', trigger: 'change' },
           { min: 1, max: 30, message: '长度在 1-30 个字符以内', trigger: 'change' },
         ],
@@ -219,8 +219,8 @@ export default {
       this.dialogFormVisible = false;
       this.formData = {
           game_id:0,
-          tag_name:"",
-          tag_label:"",
+          name:"",
+          label:"",
           
       };
     },

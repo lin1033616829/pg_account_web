@@ -71,7 +71,7 @@
 
        </el-form>
       <div class="dialog-footer" slot="footer">
-        <el-button @click="closeDialog">取 消</el-button>
+        <el-button @click="closeDialog">返 回</el-button>
         <el-button @click="enterDialog" type="primary">确 定</el-button>
       </div>
     </div>
@@ -198,6 +198,7 @@ export default {
       this.type = "update";
       if (res.code == 0) {
         this.formData = res.data.regoods;
+          this.formData.price = this.formData.price/100;
       }
     },
     closeDialog() {
@@ -205,8 +206,27 @@ export default {
     },
     async enterDialog() {
       let res;
+      let price;
       let postData = this.formData;
+      let isValidate = false;
+      this.$refs['formData'].validate((valid) => {
+            if (!valid) {
+                return false;
+            }
+            isValidate = true;
+        });
+        if(!isValidate){
+            this.$message.error('请检查页面错误信息！');
+            return false;
+        }
       postData.items_id = this.formData.items_id.toString();
+      price = this.formData.price*100;
+      let priceItem = price.toString().split(".");
+      if(priceItem.length>1){
+            this.$message.error('价格仅支持小数点两位！');
+            return;
+      }
+      postData.price = price;
       switch (this.type) {
         case "create":
           res = await createGoods(postData);
@@ -239,6 +259,7 @@ export default {
               const res = await findGoods({ id: this.$route.query.id });
               console.log("find-res", res);
               this.formData = res.data.regoods;
+              this.formData.price = this.formData.price/100;
           }else{
               this.type = "create";
           }
@@ -268,7 +289,7 @@ export default {
 <style scoped>
     .goods_opt{
         width:100%;
-        max-width: 600px;
+        max-width: 650px;
     }
     .goods_icon{
         width:160px;

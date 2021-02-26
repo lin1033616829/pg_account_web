@@ -98,3 +98,27 @@ export const createGoods = (data) => {
          params
      })
  }
+
+export const notify = (params) => {
+    return service({
+        url: "/goods/notify",
+        method: 'put',
+        params
+    })
+}
+
+// @Tags Game
+// @Summary 更新游戏的状态
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.PageInfo true "更新游戏的状态"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router /game/notifyGame [get]
+export const updateGoodsSaleStatus = (params) => {
+    return service({
+        url: "/goods/updateSaleStatus",
+        method: 'put',
+        params
+    })
+}

@@ -56,7 +56,6 @@ export default {
             this.onSubmit();
         },
         showUploadFile(file){
-            console.log("fffffffffffffff", file);
             if(file == "" || file == undefined) {
                 return "";
             }
