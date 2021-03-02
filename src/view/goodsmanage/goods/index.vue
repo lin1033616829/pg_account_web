@@ -28,11 +28,10 @@
       @selection-change="handleSelectionChange"
       border
       ref="multipleTable"
-      stripe
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
+<!--    <el-table-column type="selection" width="55"></el-table-column>-->
 
       <el-table-column label="展示图" prop="icon" width="80">
         <template slot-scope="scope">

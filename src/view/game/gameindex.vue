@@ -51,11 +51,10 @@
                 @selection-change="handleSelectionChange"
                 border
                 ref="multipleTable"
-                stripe
                 style="width: 100%"
                 tooltip-effect="dark"
         >
-            <el-table-column type="selection" width="55"></el-table-column>
+<!--            <el-table-column type="selection" width="55"></el-table-column>-->
 
             <el-table-column label="应用id" prop="appid" width="120"></el-table-column>
             <el-table-column label="游戏名称" prop="title" width="120"></el-table-column>

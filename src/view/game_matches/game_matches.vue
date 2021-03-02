@@ -34,13 +34,12 @@
       @selection-change="handleSelectionChange"
       border
       ref="multipleTable"
-      stripe
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
+<!--    <el-table-column type="selection" width="55"></el-table-column>-->
     
-<!--    <el-table-column label="ID" prop="id" width="120"></el-table-column> -->
+<!--    <el-table-column label="ID" prop="id" width="55"></el-table-column>-->
     
     <el-table-column label="GameID" prop="game_id" width="120"></el-table-column>
 

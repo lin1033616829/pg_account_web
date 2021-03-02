@@ -35,12 +35,12 @@
               </el-col>
                <el-col :xs="12" :lg="9" :md="9" :sm="14" :xl="9">
                  <div class="fl-right right-box">
-                <Search />
+<!--                <Search />-->
                 <Screenfull class="screenfull"></Screenfull>
                 <el-dropdown>
                   <span class="header-avatar">
                    <CustomPic/>
-                    <span style="margin-left: 5px">{{userInfo.nickName}}</span>
+                    <span style="margin-left: 5px">{{userInfo.nickName}}-{{userInfo.authorityId}}</span>
                     <i class="el-icon-arrow-down"></i>
                   </span>
                   <el-dropdown-menu class="dropdown-group" slot="dropdown">
@@ -84,7 +84,6 @@
 import Aside from '@/view/layout/aside'
 import HistoryComponent from '@/view/layout/aside/historyComponent/history'
 import Screenfull from '@/view/layout/screenfull'
-import Search from '@/view/layout/search/search'
 import BottomInfo from '@/view/layout/bottomInfo/bottomInfo'
 import { mapGetters, mapActions } from 'vuex'
 import CustomPic from '@/components/customPic'
@@ -106,7 +105,6 @@ export default {
     Aside,
     HistoryComponent,
     Screenfull,
-    Search,
     BottomInfo,
     CustomPic
   },
