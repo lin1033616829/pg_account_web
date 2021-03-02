@@ -39,19 +39,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="GoodsID" prop="goods_id" width="120"></el-table-column>
+      <el-table-column label="GoodsID" prop="goods_id" width="100"></el-table-column>
 
-      <el-table-column label="标题" prop="title" width="120">
+      <el-table-column label="标题" prop="title" width="125">
         <template slot-scope="scope">
           <span>{{getStrByPos(scope.row.title, 10)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="GameID" prop="game_id" width="120"></el-table-column>
+      <el-table-column label="GameID" prop="game_id" width="100"></el-table-column>
 
       <el-table-column label="游戏名称" prop="game_name" width="120"></el-table-column>
     
-    <el-table-column label="物品ID" prop="items_id" width="120"></el-table-column>
+    <el-table-column label="物品ID" prop="items_id" width="140"></el-table-column>
     
     <el-table-column label="商品标签" prop="tag_name" width="80"></el-table-column>
 
@@ -61,11 +61,11 @@
 
       <!--    <el-table-column label="描述" prop="description" width="120"></el-table-column> -->
 
-    <el-table-column label="折扣" prop="discount" width="80"></el-table-column>
+    <el-table-column label="折扣" prop="discount" width="50"></el-table-column>
 
-      <el-table-column label="价格" prop="price" width="100"></el-table-column>
+      <el-table-column label="价格" prop="price" width="90"></el-table-column>
 
-    <el-table-column label="上架状态" prop="sale" width="80">
+    <el-table-column label="状态" prop="sale" width="80">
       <template slot-scope="scope">
         <div :class="addClassStatus(scope.row.sale)">{{ showSaleStatus(scope.row.sale) }}</div>
       </template>
