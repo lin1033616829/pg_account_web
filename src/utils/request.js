@@ -41,6 +41,8 @@ service.interceptors.request.use(
             'x-token': token,
             'x-user-id': user.ID
         }
+        config.url = "admin" + config.url;
+        console.log("cccccccccccccccccccccccc", "admin" + config.url);
         return config;
     },
     error => {
