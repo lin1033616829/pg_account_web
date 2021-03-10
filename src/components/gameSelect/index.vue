@@ -39,7 +39,7 @@
         },
         data() {
             return {
-                ifNotRequest:false,
+                ifNotRequest:true,
                 options: [],
                 value: '',
                 loading: false,
@@ -66,7 +66,6 @@
                 if(searchStr == 0){
                     searchStr = "";
                 }
-
                 const res = await searchGameList({ search: searchStr });
                 console.log(res);
                 if(res.code != 0){
@@ -90,7 +89,10 @@
                 this.value = this.gameId;
             }
             this.gameSelectFunc(this.value);
-            console.log("readOnlyreadOnlyreadOnlyreadOnlyreadOnlyreadOnly", this.readOnly);
+            console.log("-------------", this.readOnly);
+            if(this.readOnly == undefined){
+                this.readOnly = false;
+            }
         },
     }
 </script>

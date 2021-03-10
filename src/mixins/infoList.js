@@ -1,5 +1,6 @@
 import { getDict } from "@/utils/dictionary";
 import { getStrPos } from "@/utils/stringFun";
+import { rightsCheck } from "@/api/api";  //  此处请自行替换地址
 export default {
     data() {
         return {
@@ -70,6 +71,12 @@ export default {
         getStrByPos(name, len){
             return getStrPos(name, len);
         },
-
+        async isHaveRights(str){
+            let params = {
+                method: str,
+            };
+            let res = await rightsCheck(params);
+            return res.data.isHaveRight;
+        },
     }
 }

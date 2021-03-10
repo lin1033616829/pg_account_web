@@ -13,10 +13,10 @@
                 </el-col>
                 <el-col :xs="20" :lg="12" :md="12">
                   <div class="text">
-                    <h4>早安，管理员， 请开始您一天的工作吧！</h4>
+                    <h4>你好，管理员， 请开始您一天的工作吧！</h4>
                     <p class="tips-text">
                       <i class="el-icon-sunny el-icon"></i>
-                      <span>今日晴，0℃ - 10℃，天气寒冷，注意添加衣物。</span>
+                      <span>天气变化，注意添加衣物。</span>
                     </p>
                   </div>
                 </el-col>
@@ -24,81 +24,57 @@
             </el-row>
           </div>
         </el-col>
-        <el-col :xs="24" :lg='8' :md="8">
-          <div class="car-right">
-            <el-row>
-              <el-col :span="8"
-                ><div class="car-item">
-                  <span class="flow"><i class="el-icon-s-grid"></i></span>
-                  <span>今日流量 </span>
-                  <b>13260</b>
-                </div></el-col
-              >
-              <el-col :span="8"
-                ><div class="car-item">
-                  <span class="user-number">
-                    <i class="el-icon-s-custom"></i>
-                  </span>
-                  <span>总用户 </span>
-                  <b>48286</b>
-                </div></el-col
-              >
-              <el-col :span="8"
-                ><div class="car-item">
-                  <span class="feedback">
-                    <i class="el-icon-star-on"></i>
-                  </span>
-                  <span>好评率 </span>
-                  <b>98%</b>
-                </div></el-col
-              >
-            </el-row>
-          </div>
-        </el-col>
+<!--        <el-col :xs="24" :lg='8' :md="8">-->
+<!--          <div class="car-right">-->
+<!--            <el-row>-->
+<!--              <el-col :span="8"-->
+<!--                ><div class="car-item">-->
+<!--                  <span class="flow"><i class="el-icon-s-grid"></i></span>-->
+<!--                  <span>今日流量 </span>-->
+<!--                  <b>13260</b>-->
+<!--                </div></el-col-->
+<!--              >-->
+<!--              <el-col :span="8"-->
+<!--                ><div class="car-item">-->
+<!--                  <span class="user-number">-->
+<!--                    <i class="el-icon-s-custom"></i>-->
+<!--                  </span>-->
+<!--                  <span>总用户 </span>-->
+<!--                  <b>48286</b>-->
+<!--                </div></el-col-->
+<!--              >-->
+<!--              <el-col :span="8"-->
+<!--                ><div class="car-item">-->
+<!--                  <span class="feedback">-->
+<!--                    <i class="el-icon-star-on"></i>-->
+<!--                  </span>-->
+<!--                  <span>好评率 </span>-->
+<!--                  <b>98%</b>-->
+<!--                </div></el-col-->
+<!--              >-->
+<!--            </el-row>-->
+<!--          </div>-->
+<!--        </el-col>-->
       </div>
     </el-row>
-    <el-row>
-      <el-card shadow="hover">
-          <h2>
-            使用教学：<a style="color:#409EFF"  target="view_window" href="https://www.bilibili.com/video/BV1fV411y7dT/">https://www.bilibili.com/video/BV1fV411y7dT/</a>
-          </h2>
-          <br>
-          <h2>
-            工作流教学：<a style="color:#409EFF"  target="view_window" href="https://www.bilibili.com/video/BV1Ka411F7Ji/">https://www.bilibili.com/video/BV1Ka411F7Ji/</a>
-          </h2>
-          <div></div>
-      </el-card>
-    </el-row>
-    <div class="shadow">
-      <el-row :gutter="20">
-        <el-col
-          :span="4"
-          v-for="(card, key) in toolCards"
-          :key="key"
-          @click.native="toTarget(card.name)"
-          :xs="8"
-        >
-          <el-card shadow="hover" class="grid-content">
-            <i :class="card.icon" :style="{ color: card.color }"></i>
-            <p>{{ card.label }}</p>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="bottom">
-      <el-row :gutter="32">
-        <el-col :xs="24" :sm="24" :lg="12">
-          <div class="chart-player">
-            <musicPlayer />
-          </div>
-        </el-col>
-        <el-col :xs="24" :sm="24" :lg="12">
-          <div class="chart-player">
-            <todo-list />
-          </div>
-        </el-col>
-      </el-row>
-    </div>
+
+<!--    <div class="shadow">-->
+<!--      <el-row :gutter="20">-->
+<!--        <el-col-->
+<!--          :span="4"-->
+<!--          v-for="(card, key) in toolCards"-->
+<!--          :key="key"-->
+<!--          @click.native="toTarget(card.name)"-->
+<!--          :xs="8"-->
+<!--        >-->
+<!--          <el-card shadow="hover" class="grid-content">-->
+<!--            <i :class="card.icon" :style="{ color: card.color }"></i>-->
+<!--            <p>{{ card.label }}</p>-->
+<!--          </el-card>-->
+<!--        </el-col>-->
+<!--      </el-row>-->
+<!--    </div>-->
+
   </div>
 </template>
 

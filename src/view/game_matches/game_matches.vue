@@ -3,7 +3,7 @@
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
           <el-form-item label="GameID:">
-              <game-select @changeGame="gameIdChangeSearch" :gameId="searchInfo.game_id" />
+              <game-select @changeGame="gameIdChangeSearch" :readOnly="gameSelectReadOnly" :gameId="searchInfo.game_id" />
           </el-form-item>
             <el-form-item label="规则名称">
               <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>
@@ -118,7 +118,7 @@
 
          <el-form-item label="GameID:" prop="game_id">
 <!--             <el-input v-model.number="formData.game_id" clearable placeholder="请输入"></el-input>-->
-             <game-select @changeGame="gameIdChange" :gameId="formData.game_id" />
+             <game-select @changeGame="gameIdChange" :readOnly="gameSelectUpdateReadOnly" :gameId="formData.game_id" />
         </el-form-item>
 
          <el-form-item label="规则名称:" prop="name">
@@ -200,6 +200,8 @@ export default {
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
+        gameSelectReadOnly:false,
+        gameSelectUpdateReadOnly:true,
       multipleSelection: [],
         teamTypeList:[],
       formData: {
@@ -370,6 +372,7 @@ export default {
     async updateGameMatches(row) {
       const res = await findGameMatches({ ID: row.id });
       this.type = "update";
+      this.gameSelectUpdateReadOnly = true;
       if (res.code == 0) {
         this.formData = res.data.reGameMatch;
         // this.formData.team_type = this.formData.team_type.toString();
@@ -434,8 +437,8 @@ export default {
         }
       switch (this.type) {
         case "create":
-          res = await createGameMatches(this.formData);
-          break;
+            res = await createGameMatches(this.formData);
+            break;
         case "update":
           res = await updateGameMatches(this.formData);
           break;
@@ -455,6 +458,7 @@ export default {
     openDialog() {
       this.type = "create";
       this.dialogFormVisible = true;
+      this.gameSelectUpdateReadOnly = false;
     }
   },
   async created() {

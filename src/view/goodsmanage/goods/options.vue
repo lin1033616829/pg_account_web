@@ -62,7 +62,7 @@
       </el-form-item>
        
          <el-form-item label="价格:" prop="price">
-            <el-input v-model="formData.price" clearable placeholder="请输入" ></el-input>
+            <el-input v-model.number="formData.price" clearable placeholder="请输入" ></el-input>
       </el-form-item>
        
          <el-form-item label="折扣:" prop="discount">
@@ -113,7 +113,7 @@ export default {
             title:"",
             description:"",
             currency_id:0,
-            price:"",
+            price:0,
             discount:0,
             sale:0,
             notify:0,
@@ -200,7 +200,6 @@ export default {
       this.type = "update";
       if (res.code == 0) {
         this.formData = res.data.regoods;
-          this.formData.price = this.formData.price/100;
       }
     },
     closeDialog() {
@@ -208,7 +207,7 @@ export default {
     },
     async enterDialog() {
       let res;
-      let price;
+      // let price;
       let postData = deepClone(this.formData);
       let isValidate = false;
       this.$refs['formData'].validate((valid) => {
@@ -222,12 +221,12 @@ export default {
             return false;
         }
       postData.items_id = this.formData.items_id.toString();
-      price = this.formData.price;
-      let priceItem = price.toString().split(".");
-      if(priceItem.length>1){
-            this.$message.error('价格仅支持小数点两位！');
-            return;
-      }
+      // price = this.formData.price;
+      // let priceItem = price.toString().split(".");
+      // if(priceItem.length>1){
+      //       this.$message.error('价格仅支持小数点两位！');
+      //       return;
+      // }
       switch (this.type) {
         case "create":
           res = await createGoods(postData);

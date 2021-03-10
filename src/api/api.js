@@ -116,3 +116,12 @@ export const deleteApi = (data) => {
         data
     })
 }
+
+
+export const rightsCheck = (data) => {
+    return service({
+        url: "/api/rightsCheck",
+        method: 'get',
+        data
+    })
+}
