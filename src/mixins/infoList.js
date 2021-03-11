@@ -6,7 +6,7 @@ export default {
         return {
             hostPath:process.env.VUE_APP_BASE_API,
             // uploadPrex:process.env.UPOAD_BASE_PRE,
-            uploadPrex:"http://chukong.oss-cn-qingdao.aliyuncs.com",
+            uploadPrex:process.env.VUE_APP_UPOAD_BASE_PRE,
             page: 1,
             total: 10,
             pageSize: 10,
