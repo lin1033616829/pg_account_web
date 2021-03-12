@@ -2,7 +2,6 @@ export default {
     data() {
         return {
             hostPath:process.env.VUE_APP_BASE_API,
-            // uploadPrex:process.env.UPOAD_BASE_PRE,
             uploadPrex:process.env.VUE_APP_UPOAD_BASE_PRE,
         }
     },

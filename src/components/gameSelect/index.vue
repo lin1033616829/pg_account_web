@@ -89,7 +89,6 @@
                 this.value = this.gameId;
             }
             this.gameSelectFunc(this.value);
-            console.log("-------------", this.readOnly);
             if(this.readOnly == undefined){
                 this.readOnly = false;
             }

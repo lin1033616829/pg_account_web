@@ -8,6 +8,8 @@ const service = axios.create({
 })
 let acitveAxios = 0
 let timer
+let protocol = window.location.protocol;
+let contactPath  = protocol + "//" + window.location.host;
 const showLoading = () => {
     acitveAxios++
     if (timer) {
@@ -41,8 +43,13 @@ service.interceptors.request.use(
             'x-token': token,
             'x-user-id': user.ID
         }
-        config.url = process.env.VUE_APP_REDIRECT + config.url;
-        console.log("cccccccccccccccccccccccc", config.url);
+        if(process.env.VUE_APP_REDIRECT == "true"){
+            if(config.url.indexOf("http") == -1){
+                config.url = contactPath + config.url;
+            }
+
+        }
+        console.log("sendUrl", config.url);
         return config;
     },
     error => {

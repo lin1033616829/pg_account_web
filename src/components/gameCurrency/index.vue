@@ -25,7 +25,7 @@
         props: ['gameId', 'curId'],
         data() {
             return {
-                ifNotRequest:true,
+                ifNotRequest:false,
                 options: [],
                 value: '',
                 loading: false,
